@@ -1,19 +1,23 @@
 import requests
 from bs4 import BeautifulSoup as bs
+from selenium import webdriver as wd
+from selenium.webdriver.common.by import By
+
+options = wd.ChromeOptions()
+options.add_experimental_option('excludeSwitches', ['enable-logging'])
+driver = wd.Chrome(executable_path='C:\chromedriver', options=options)
+driver.maximize_window()
 
 URL = 'https://www.melon.com/genre/song_list.htm?gnrCode=GN0100'
+driver.get(URL)
 
-header = {"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36"}
-request = requests.get(URL, headers=header)
+# driver.find_element(By.XPATH, '//*[@id="frm"]/div/table/tbody/tr[1]/td[4]/div/a').click()
+# driver.implicitly_wait(2)
 
-html = request.text
+html = driver.page_source
+soup = bs(html, 'lxml')
 
-soup = bs(html, 'html.parser')
+song_bs = soup.select('#downloadfrm > div > div > div.entry > div.info > div.artist > a')
+# song_bs = soup.select('#downloadfrm > div > div > div.entry > div.info > div.song_name')
 
-song_bs = soup.select('.ellipsis.rank01 > span > a')
-songs = []
-for song in song_bs:
-    songs.append(song.text)
-
-
-print(songs)
+print(song_bs)
