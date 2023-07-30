@@ -14,25 +14,51 @@ driver.get(URL)
 
 # 노래 정보 dataframe
 df = pd.DataFrame({'song_name':[], 'artist_name':[], 'release_date':[], 'song_genre':[]})
+temp_df = pd.DataFrame({'song_name':[], 'artist_name':[], 'release_date':[], 'song_genre':[]})
+
 
 
 # 위에서 50개
 for page in range(1, 10):
-    for i in range(50):
-        driver.find_element(By.XPATH, '//*[@id="frm"]/div/table/tbody/tr[{0}]/td[4]/div/a'.format(i+1)).click()
-        driver.implicitly_wait(2)
+    driver.refresh()
+    list_btn = driver.find_elements(By.CSS_SELECTOR, 'a.btn.button_icons.type03.song_info')
 
-        song_name = driver.find_element(By.CLASS_NAME, 'song_name').text
+    for i in range(len(list_btn)):
+        list_btn[i].click()
+        driver.implicitly_wait(5)
+
+        song_name = driver.find_element(By.XPATH, '//*[@id="downloadfrm"]/div/div/div[2]/div[1]/div[1]').text
         artist_name = driver.find_element(By.XPATH, '//*[@id="downloadfrm"]/div/div/div[2]/div[1]/div[2]/a/span[1]').text
         release_date = driver.find_element(By.XPATH, '//*[@id="downloadfrm"]/div/div/div[2]/div[2]/dl/dd[2]').text
         song_genre = driver.find_element(By.XPATH, '//*[@id="downloadfrm"]/div/div/div[2]/div[2]/dl/dd[3]').text
-    
-    
-    driver.back()
-    driver.find_element(By.XPATH, '//*[@id="pageObjNavgation"]/div/span/a[{0}]'.format(page)).click()
+        
+        temp_df.loc[i] = [song_name, artist_name, release_date, song_genre]
 
+        driver.back()
+        driver.implicitly_wait(5)
+    
+    df = pd.concat([df, temp_df], ignore_index=True)
 
-df.loc[i] = [song_name, artist_name, release_date, song_genre]
+    driver.find_element(By.XPATH, f'//*[@id="pageObjNavgation"]/div/span/a[{page}]').click()
+    driver.implicitly_wait(5)
+    
 
 
 print(df)
+
+
+# temp = driver.find_elements(By.CSS_SELECTOR, '.btn.button_icons.type03.song_info')
+
+# song_l = []
+
+# for i in range(len(temp)):
+#     temp[i].click()
+#     driver.implicitly_wait(5)
+
+#     song_l.append(driver.find_element(By.CSS_SELECTOR, '#downloadfrm > div > div > div.entry > div.info > div.song_name').text)
+
+#     driver.back()
+#     driver.implicitly_wait(5)
+
+# print(song_l)
+
