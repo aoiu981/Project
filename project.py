@@ -19,7 +19,7 @@ temp_df = pd.DataFrame({'song_name':[], 'artist_name':[], 'release_date':[], 'so
 
 
 # 위에서 50개
-for page in range(1, 10):
+for page in range(1, 11):
     driver.refresh()
     list_btn = driver.find_elements(By.CSS_SELECTOR, 'a.btn.button_icons.type03.song_info')
 
