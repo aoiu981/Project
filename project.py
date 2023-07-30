@@ -45,20 +45,3 @@ for page in range(1, 11):
 
 
 print(df)
-
-
-# temp = driver.find_elements(By.CSS_SELECTOR, '.btn.button_icons.type03.song_info')
-
-# song_l = []
-
-# for i in range(len(temp)):
-#     temp[i].click()
-#     driver.implicitly_wait(5)
-
-#     song_l.append(driver.find_element(By.CSS_SELECTOR, '#downloadfrm > div > div > div.entry > div.info > div.song_name').text)
-
-#     driver.back()
-#     driver.implicitly_wait(5)
-
-# print(song_l)
-
