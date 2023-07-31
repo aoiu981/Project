@@ -39,8 +39,9 @@ for page in range(1, 11):
     
     df = pd.concat([df, temp_df], ignore_index=True)
 
-    driver.find_element(By.XPATH, f'//*[@id="pageObjNavgation"]/div/span/a[{page}]').click()
-    driver.implicitly_wait(5)
+    if not page == 10:
+        driver.find_element(By.XPATH, f'//*[@id="pageObjNavgation"]/div/span/a[{page}]').click()
+        driver.implicitly_wait(5)
     
 
 
