@@ -1,6 +1,4 @@
-import requests
 import pandas as pd
-from bs4 import BeautifulSoup as bs
 from selenium import webdriver as wd
 from selenium.webdriver.common.by import By
 
@@ -15,8 +13,6 @@ driver.get(URL)
 # 노래 정보 dataframe
 df = pd.DataFrame({'song_name':[], 'artist_name':[], 'release_date':[], 'song_genre':[]})
 temp_df = pd.DataFrame({'song_name':[], 'artist_name':[], 'release_date':[], 'song_genre':[]})
-
-
 
 # 위에서 50개
 for page in range(1, 11):
@@ -39,8 +35,9 @@ for page in range(1, 11):
     
     df = pd.concat([df, temp_df], ignore_index=True)
 
-    driver.find_element(By.XPATH, f'//*[@id="pageObjNavgation"]/div/span/a[{page}]').click()
-    driver.implicitly_wait(5)
+    if not page == 10:
+        driver.find_element(By.XPATH, f'//*[@id="pageObjNavgation"]/div/span/a[{page}]').click()
+        driver.implicitly_wait(5)
     
 
 
